@@ -8,4 +8,5 @@ scratch/**
 !scratch/README.md
 .venv_*/
 .venv/ 
+coverage.**
 
