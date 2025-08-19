@@ -57,8 +57,10 @@ targets:
       # We explicitly deploy to /Workspace/Users/kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     permissions:
-      - user_name: kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com
+      - service_principal_name: 6e3c69d2-3001-47d8-ad59-a689f328b502
         level: CAN_MANAGE
+    run_as: 
+      service_principal_name: 6e3c69d2-3001-47d8-ad59-a689f328b502
 
 
   prod:
@@ -73,5 +75,7 @@ targets:
       # We explicitly deploy to /Workspace/Users/kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     permissions:
-      - user_name: kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com
+      - service_principal_name: 8bf07e2b-e3d6-4a0c-9708-ae938a5240cf
         level: CAN_MANAGE
+    run_as: 
+      service_principal_name: 8bf07e2b-e3d6-4a0c-9708-ae938a5240cf
