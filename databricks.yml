@@ -1,0 +1,77 @@
+# This is a Databricks asset bundle definition for dab_project.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: dab_project
+  uuid: 02a3e5ff-7b0b-4575-bf66-5f8b855a3535
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+variables:
+  # This is a Databricks asset bundle variable definition.
+  # See https://docs.databricks.com/dev-tools/bundles/variables.html for documentation.
+  # Variables can be used in the bundle definition and in the included resources.
+  # Variables are defined as key-value pairs.
+  # The value can be a string, a number, or a boolean.
+  # Variables can be referenced in the bundle definition using the syntax: {{variable_name}}.
+  # Variables can also be used in the included resources using the same syntax.
+  # Variables can be overridden by the user at deployment time.
+  catalog:
+    default: "citibike_dev"
+
+  dev_flag:
+    default: true
+    description: "Enable development mode for the pipeline. If set to false, the pipeline will run in production mode."
+
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-4326025014636919.19.azuredatabricks.net
+      
+
+    #presets:
+      # Set dynamic_version: true on all artifacts of type "whl".
+      # This makes "bundle deploy" add a timestamp to wheel's version before uploading,
+      # new wheel takes over the previous installation even if actual wheel version is unchanged.
+      # See https://docs.databricks.com/aws/en/dev-tools/bundles/settings
+      #artifacts_dynamic_version: true
+
+  test:
+    mode: production
+    variables:
+      catalog:
+        default: "citibike_test"
+    # The test target uses 'mode: production' to create a production copy.
+      dev_flag: 
+        default: false
+    workspace:
+      host: https://adb-2295872382707207.7.azuredatabricks.net/
+      # We explicitly deploy to /Workspace/Users/kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com to make sure we only have a single copy.
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com
+        level: CAN_MANAGE
+
+
+  prod:
+    mode: production
+    variables:
+      catalog:
+        default: "citibike_prod"
+      dev_flag: 
+        default: false
+    workspace:
+      host: https://adb-1758395147557421.1.azuredatabricks.net/
+      # We explicitly deploy to /Workspace/Users/kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com to make sure we only have a single copy.
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: kmatombo_travelivity.com#ext#@kmatombotravelivity.onmicrosoft.com
+        level: CAN_MANAGE
